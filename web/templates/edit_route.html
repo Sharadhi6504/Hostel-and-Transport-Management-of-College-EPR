@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Edit Route — {{ route.name }}{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>Edit Route: {{ route.name }}</h2>
+    <form method="post" action="{{ url_for('edit_route', route_id=route['id']) }}">
+      <label>Pickup location
+        <input name="pickup_location" value="{{ route.pickup_location or '' }}" />
+      </label>
+
+      <label>Assigned bus (optional)
+        <select name="bus_id">
+          <option value="">-- none --</option>
+          {% for b in buses %}
+            <option value="{{ b['id'] }}" {% if b['id'] == route.bus_id %}selected{% endif %}>{{ b['registration'] }} (cap {{ b['capacity'] }})</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <div class="form-actions"><button class="btn primary" type="submit">Save</button></div>
+    </form>
+  </section>
+{% endblock %}

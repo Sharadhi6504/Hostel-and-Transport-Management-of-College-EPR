@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Add Student — College ERP{% endblock %}
+{% block content %}
+  <section class="card form-card">
+    <h2>Add student</h2>
+    <form method="post">
+      <label>Name<input name="name" required></label>
+      <label>Roll no<input name="roll_no"></label>
+      <label>Department<input name="department"></label>
+      <label>Contact<input name="contact"></label>
+      <label>Address<textarea name="address"></textarea></label>
+      <label>Login username (optional)<input name="username"></label>
+      <label>Login password (optional)<input name="password" type="password"></label>
+      <div class="form-actions">
+        <button class="btn primary" type="submit">Add</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

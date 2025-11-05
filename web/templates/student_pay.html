@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Payments{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>Payments</h2>
+    <p>Select which payment you want to make:</p>
+    <div class="btn-group" style="margin-bottom:12px;">
+      <button id="btnHostel" class="btn">Hostel</button>
+      <button id="btnTransport" class="btn">Transport</button>
+    </div>
+
+    {% if profile %}
+      <div id="hostelForm" style="display:none;">
+        <div class="card">
+          <h3>Hostel Payment</h3>
+          <p>Already paid: {{ profile.total_hostel_paid or 0.0 }}</p>
+          <form method="post" action="{{ url_for('hostel_pay') }}" style="margin-top:8px;">
+            <label>Amount <input name="amount" type="number" step="0.01" value="0.00" required></label>
+            <div class="form-actions"><button class="btn primary" type="submit">Pay Hostel</button></div>
+          </form>
+        </div>
+      </div>
+
+      <div id="transportForm" style="display:none;">
+        <div class="card">
+          <h3>Transport Payment</h3>
+          <p>Total route fee: {{ profile.total_route_fee or 0.0 }} — Paid: {{ profile.total_transport_paid or 0.0 }}</p>
+          <p><strong>Outstanding dues:</strong> {{ profile.total_dues or 0.0 }}</p>
+          <form method="post" action="{{ url_for('transport_pay') }}" style="margin-top:8px;">
+            <label>Amount <input name="amount" type="number" step="0.01" value="{{ profile.total_dues or 0.0 }}" required></label>
+            <div class="form-actions"><button class="btn primary" type="submit">Pay Transport</button></div>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <p>Profile not available.</p>
+    {% endif %}
+  </section>
+
+  <script>
+    (function(){
+      const btnHostel = document.getElementById('btnHostel');
+      const btnTransport = document.getElementById('btnTransport');
+      const hostelForm = document.getElementById('hostelForm');
+      const transportForm = document.getElementById('transportForm');
+      btnHostel.addEventListener('click', function(){ hostelForm.style.display='block'; transportForm.style.display='none'; });
+      btnTransport.addEventListener('click', function(){ transportForm.style.display='block'; hostelForm.style.display='none'; });
+    })();
+  </script>
+{% endblock %}

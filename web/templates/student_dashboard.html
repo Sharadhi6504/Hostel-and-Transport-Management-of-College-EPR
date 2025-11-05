@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Your Profile — College ERP{% endblock %}
+{% block content %}
+  <section class="card">
+    {% if announcements %}
+  <div id="announcementBar" class="announcement-bar card" role="region" aria-label="Announcements">
+        <div class="bar-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg class="bell" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2a4 4 0 0 0-4 4v1.1C6.7 8.1 6 9.9 6 12v3l-1.7 1.7A1 1 0 0 0 5.3 18h13.4a1 1 0 0 0 .96-1.3L18 15v-3c0-2.1-.7-3.9-2-4.9V6a4 4 0 0 0-4-4zM12 22a2.5 2.5 0 0 0 2.5-2.5h-5A2.5 2.5 0 0 0 12 22z"/></svg>
+            <div style="font-weight:600">Announcements</div>
+          </div>
+          <a class="view-all" href="{{ url_for('student_notifications') }}">View all</a>
+        </div>
+        {% for a in announcements %}
+          <div class="announcement-item">
+            <div>
+              <a href="{{ url_for('student_notification_detail', aid=a.id) }}" style="color:var(--text);text-decoration:none">
+                <strong>{{ a.title }}</strong> — {{ a.message }}
+                <div class="ann-date">{{ a.created }}{% if a.start_date or a.end_date %} · {% if a.start_date %}Start: {{ a.start_date }}{% endif %}{% if a.end_date %} End: {{ a.end_date }}{% endif %}{% endif %}</div>
+              </a>
+            </div>
+            <div>
+              <form method="post" action="{{ url_for('dismiss_announcement') }}">
+                <input type="hidden" name="announcement_id" value="{{ a.id }}">
+                <button class="btn small" type="submit">Dismiss</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <script>
+        // Auto-hide announcement bar after 6 seconds unless user prefers reduced motion
+        (function(){
+          try{
+            const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if(mq && mq.matches) return;
+            const bar = document.getElementById('announcementBar');
+            if(!bar) return;
+            // don't auto-hide if user interacts with it (hover/focus)
+            let interacted = false;
+            bar.addEventListener('mouseenter', ()=> interacted = true);
+            bar.addEventListener('focusin', ()=> interacted = true);
+            setTimeout(()=>{
+              if(!interacted){
+                bar.classList.add('auto-hide');
+              }
+            }, 6000);
+          }catch(e){/* ignore in older browsers */}
+        })();
+      </script>
+    {% endif %}
+    {% if profile.student %}
+      <div class="student-card">
+        <div class="avatar">{{ (profile.student.name[:1] if profile.student.name) | default('S') }}</div>
+        <div class="profile-meta">
+          <h2>{{ profile.student.name }}</h2>
+          <p>Roll: <strong>{{ profile.student.roll_no }}</strong> &nbsp; · &nbsp; Dept: <strong>{{ profile.student.department }}</strong></p>
+          <p>Contact: {{ profile.student.contact }}</p>
+
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="num">{{ profile.total_hostel_paid or 0.0 }}</div>
+              <div class="lbl">Hostel paid</div>
+            </div>
+            <div class="stat">
+              <div class="num">{{ profile.total_transport_paid or 0.0 }}</div>
+              <div class="lbl">Transport paid</div>
+            </div>
+            <div class="stat">
+              <div class="num">{{ profile.total_dues or 0.0 }}</div>
+              <div class="lbl">Outstanding</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <a class="btn" href="{{ url_for('student_notifications') }}" title="Notifications">
+            <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2a6 6 0 0 0-6 6v3.1C4.7 12.1 4 13.9 4 16v2l-1.7 1.7A1 1 0 0 0 3.3 21h17.4a1 1 0 0 0 .96-1.3L20 18v-2c0-2.1-.7-3.9-2-4.9V8a6 6 0 0 0-6-6zM12 22a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3z"/></svg>
+            Notifications
+          </a>
+          <a class="btn" href="{{ url_for('student_pay_page') }}">Pay</a>
+          <a class="btn" href="{{ url_for('student_messages') }}">Messages</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <h3>Hostel allocations</h3>
+        {% if profile.hostel_allocations %}
+          {% for a in profile.hostel_allocations %}
+            <div class="card">Room: <strong>{{ a.room_no }}</strong> ({{ a.block }}) — checkin: {{ a.checkin_date }} {% if a.checkout_date %} — checkout: {{ a.checkout_date }}{% endif %}</div>
+          {% endfor %}
+        {% else %}
+          <p>No hostel allocations</p>
+        {% endif %}
+
+        <h3>Transport allocations</h3>
+        {% if profile.transport_allocations %}
+          {% for t in profile.transport_allocations %}
+            <div class="card">Route: <strong>{{ t.route_name }}</strong> — Pickup: {{ t.pickup_location }} — Fee: {{ t.fee }}</div>
+          {% endfor %}
+        {% else %}
+          <p>Not enrolled to any transport routes</p>
+        {% endif %}
+
+        <h4>Enroll to a route</h4>
+        <form method="post" action="{{ url_for('transport_enroll') }}">
+          <label>Select route
+            <select name="route_id">
+              {% for r in routes %}
+                <option value="{{ r['id'] }}">{{ r['name'] }} — {{ r['pickup_location'] }} — Fee: {{ r['fee'] }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <div class="form-actions"><button class="btn primary" type="submit">Enroll</button></div>
+        </form>
+      </div>
+    {% else %}
+      <p>No profile available</p>
+    {% endif %}
+  </section>
+{% endblock %}

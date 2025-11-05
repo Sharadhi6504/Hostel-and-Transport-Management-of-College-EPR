@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}My Messages{% endblock %}
+{% block content %}
+  <section class="toolbar">
+    <h2>My Messages</h2>
+  </section>
+  <section>
+    <ul class="message-list">
+    {% for t in threads %}
+      <li class="thread">
+        <a href="{{ url_for('student_message_detail', msg_id=t['id']) }}">{{ t.get('subject') or 'No subject' }}</a>
+        <div class="meta">Created: {{ t.get('created') }}{% if t.get('is_read') is not none and t.get('is_read')==0 %} <span class="badge unread">Unread</span>{% endif %}</div>
+        {% if t.children %}
+          <ul class="replies">
+          {% for c in t.children %}
+            <li>{{ c.get('sender_role') or 'student' }}: {{ c.get('message')[:80] }} - <small>{{ c.get('created') }}</small></li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% else %}
+      <li>No messages</li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endblock %}

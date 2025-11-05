@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Messages — Admin Inbox{% endblock %}
+{% block content %}
+  <section class="toolbar">
+    <h2>Messages</h2>
+  </section>
+  <section>
+    <table class="table">
+      <thead><tr><th>ID</th><th>From (Student)</th><th>To</th><th>Subject</th><th>Created</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for m in messages %}
+        <tr>
+          <td>{{ m['id'] }}</td>
+          <td>{{ m['student_name'] }}</td>
+          <td>{{ m['to_role'] }}{% if m['to_id'] %} ({{ m['to_id'] }}){% endif %}</td>
+          <td>
+            {{ m['subject'] or '-' }}
+            {% if not (m.get('is_read')==1) %}
+              <span class="badge unread">Unread</span>
+            {% endif %}
+          </td>
+          <td>{{ m['created'] }}</td>
+          <td><a class="btn" href="{{ url_for('admin_message_detail', msg_id=m['id']) }}">View</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6">No messages</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

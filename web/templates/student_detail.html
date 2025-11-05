@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Student — {{ student.name }}{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>{{ student.name }}</h2>
+    <p><strong>Roll:</strong> {{ student.roll_no }}</p>
+    <p><strong>Department:</strong> {{ student.department }}</p>
+    <p><strong>Contact:</strong> {{ student.contact }}</p>
+  </section>
+
+  <section class="card">
+    <h3>Current Hostel Allocations</h3>
+    {% for a in allocs %}
+      <div>
+        Room {{ a.room_no }} ({{ a.block }}) — Checkin: {{ a.checkin_date }}
+        <form method="post" action="{{ url_for('checkout_allocation', alloc_id=a.id) }}" style="display:inline;margin-left:1rem;" onsubmit="return confirm('Confirm checkout of student from this room?');">
+          <button class="btn warn" type="submit">Checkout</button>
+        </form>
+      </div>
+    {% else %}
+      <p>No current allocations</p>
+    {% endfor %}
+
+    <h4>Assign Room</h4>
+    <form method="post" action="{{ url_for('assign_room', student_id=student['id']) }}">
+      <label>Select room
+        <select name="room_id">
+          {% for r in rooms %}
+            <option value="{{ r['id'] }}">{{ r['block'] }} - {{ r['room_no'] }} (cap {{ r['capacity'] }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <div class="form-actions"><button class="btn primary" type="submit">Assign Room</button></div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h3>Transport</h3>
+    {% for t in transports %}
+      <div>Route: {{ t.route_name }} — Active</div>
+    {% else %}
+      <p>Not assigned to any active transport</p>
+    {% endfor %}
+    <h4>Assign Route / Transport Details</h4>
+    <form method="post" action="{{ url_for('assign_transport', student_id=student['id']) }}">
+      <label>Select route
+        <select name="route_id">
+          {% for r in routes %}
+            <option value="{{ r['id'] }}">{{ r['name'] }} — {{ r['pickup_location'] }} — Fee: {{ r['fee'] }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>Select bus (optional)
+        <select name="bus_id">
+          <option value="">-- none --</option>
+          {% for b in buses %}
+            <option value="{{ b['id'] }}">{{ b['registration'] }} (cap {{ b['capacity'] }})</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>Select existing driver (optional)
+        <select name="driver_id">
+          <option value="">-- none --</option>
+          {% for d in drivers %}
+            <option value="{{ d['id'] }}">{{ d['name'] }}{% if d['license_no'] %} — {{ d['license_no'] }}{% endif %}{% if d.get('contact') %} — {{ d['contact'] }}{% endif %}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <p>Or create new driver</p>
+      <label>Driver name <input name="driver_name" type="text" /></label>
+      <label>Driver contact <input name="driver_contact" type="text" /></label>
+
+      <label>Pickup location (optional)
+        <input name="pickup_location" type="text" value="" />
+      </label>
+
+      <div class="form-actions"><button class="btn primary" type="submit">Assign Transport</button></div>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Edit Bus — College ERP{% endblock %}
+{% block content %}
+  <section class="card form-card">
+    <h2>Edit bus</h2>
+    <form method="post">
+      <label>Registration<input name="registration" required value="{{ bus['registration'] }}"></label>
+      <label>Capacity<input name="capacity" type="number" value="{{ bus['capacity'] }}"></label>
+      <label>Driver
+        <select name="driver_id">
+          <option value="">-- none --</option>
+          {% for d in drivers %}
+            <option value="{{ d['id'] }}" {% if bus['driver_id'] == d['id'] %}selected{% endif %}>{{ d['name'] }} ({{ d['license_no'] }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <div class="form-actions">
+        <button class="btn primary" type="submit">Save</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

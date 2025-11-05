@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Payment Receipt{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>Payment Receipt</h2>
+    <p><strong>Type:</strong> {{ payment.type }}</p>
+    <p><strong>Amount:</strong> {{ payment.amount }}</p>
+    <p><strong>Date:</strong> {{ payment.date }}</p>
+    {% if payment.receipt_no %}
+      <p><strong>Receipt No:</strong> {{ payment.receipt_no }}</p>
+    {% endif %}
+    <p><strong>Payment ID:</strong> {{ payment.id }}</p>
+    <div class="form-actions">
+      <a class="btn" href="{{ url_for('student_pay_page') }}">Back to payments</a>
+      <a class="btn" href="{{ url_for('dashboard') }}">Dashboard</a>
+    </div>
+  </section>
+{% endblock %}

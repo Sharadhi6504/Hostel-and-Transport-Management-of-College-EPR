@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Add Driver — College ERP{% endblock %}
+{% block content %}
+  <section class="card form-card">
+    <h2>Add driver</h2>
+    <form method="post">
+      <label>Name<input name="name" required></label>
+      <label>License no<input name="license_no"></label>
+      <label>Contact<input name="contact"></label>
+      <div class="form-actions">
+        <button class="btn primary" type="submit">Add driver</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

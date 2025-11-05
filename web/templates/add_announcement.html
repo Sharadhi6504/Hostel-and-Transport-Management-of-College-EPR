@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Create Announcement — College ERP{% endblock %}
+{% block content %}
+  <section class="card form-card">
+    <h2>{% if announcement %}Edit Announcement{% else %}Create Announcement{% endif %}</h2>
+    <p>Broadcast a message to all students. Use concise titles and clear messages.</p>
+    <form method="post" action="{{ url_for('add_announcement') if not announcement else url_for('edit_announcement', aid=announcement.id) }}">
+      <div class="form-group">
+        <label>Title
+          <input type="text" name="title" placeholder="Short headline" value="{{ announcement.title if announcement }}" required>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Message
+          <textarea name="message" placeholder="Full message body" required>{{ announcement.message if announcement }}</textarea>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Start date (optional)
+          <input type="date" name="start_date" value="{{ announcement.start_date if announcement and announcement.start_date }}">
+        </label>
+      </div>
+      <div class="form-group">
+        <label>End date (optional)
+          <input type="date" name="end_date" value="{{ announcement.end_date if announcement and announcement.end_date }}">
+        </label>
+      </div>
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" name="active" {% if announcement and announcement.active %}checked{% elif not announcement %}checked{% endif %}> Active</label>
+      </div>
+      <div class="form-actions">
+        <button class="btn primary" type="submit">{% if announcement %}Save{% else %}Publish{% endif %}</button>
+        <a class="btn" href="{{ url_for('dashboard') }}">Cancel</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}

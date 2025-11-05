@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Notifications — College ERP{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>Your Notifications</h2>
+    <form method="get" style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:6px">Sort:
+        <select name="sort">
+          <option value="newest" {% if request.args.get('sort','newest') == 'newest' %}selected{% endif %}>Newest</option>
+          <option value="oldest" {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>Oldest</option>
+        </select>
+      </label>
+      <label style="display:flex;align-items:center;gap:6px">Show:
+        <select name="show">
+          <option value="active" {% if request.args.get('show','active') == 'active' %}selected{% endif %}>Active</option>
+          <option value="all" {% if request.args.get('show') == 'all' %}selected{% endif %}>All</option>
+          <option value="inactive" {% if request.args.get('show') == 'inactive' %}selected{% endif %}>Inactive</option>
+        </select>
+      </label>
+      <div style="margin-left:auto">
+        <button class="btn small" type="submit">Apply</button>
+        <a class="btn small" href="{{ url_for('student_notifications') }}">Reset</a>
+      </div>
+    </form>
+    {% if announcements %}
+      <ul style="list-style:none;padding:0;margin:0">
+        {% for a in announcements %}
+          <li class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <a href="{{ url_for('student_notification_detail', aid=a.id) }}" style="color:var(--text);text-decoration:none">
+                <strong>{{ a.title }}</strong>
+                <div style="color:var(--muted);font-size:0.9rem">{{ a.created }}{% if a.start_date or a.end_date %} · {% if a.start_date %}Start: {{ a.start_date }}{% endif %}{% if a.end_date %} End: {{ a.end_date }}{% endif %}{% endif %}</div>
+                <div style="margin-top:6px;color:var(--muted);font-size:0.95rem">{{ a.message[:180] }}{% if a.message|length > 180 %}…{% endif %}</div>
+              </a>
+            </div>
+            <div style="min-width:120px;text-align:right">
+              {% if a.dismissed %}
+                <span style="color:var(--muted);font-size:0.9rem">Dismissed</span>
+              {% else %}
+                <form method="post" action="{{ url_for('dismiss_announcement') }}">
+                  <input type="hidden" name="announcement_id" value="{{ a.id }}">
+                  <button class="btn small" type="submit">Dismiss</button>
+                </form>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No notifications at this time.</p>
+    {% endif %}
+  </section>
+{% endblock %}

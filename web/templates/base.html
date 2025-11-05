@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}College ERP{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="{{ url_for('dashboard') }}">College ERP</a>
+        <div class="header-controls">
+          <button id="themeToggle" class="btn small">Toggle theme</button>
+          {% if session.user and session.user.role == 'student' %}
+            <a class="btn" href="{{ url_for('student_pay_page') }}" title="Pay transport fee">
+              <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3H2V7zm0 5h20v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5zm4 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+              Pay
+            </a>
+            <a class="btn" href="{{ url_for('student_contact_page') }}" title="Contact / Help">
+              <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 6h-2V4a2 2 0 0 0-2-2H7C5.9 2 5 2.9 5 4v2H3c-.6 0-1 .4-1 1v9c0 .6.4 1 1 1h4l4 4 4-4h4c.6 0 1-.4 1-1V7c0-.6-.4-1-1-1z"/></svg>
+              Contact
+            </a>
+          {% endif %}
+          {% if session.user %}
+          <a class="btn small" href="{{ url_for('logout') }}">Logout</a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-container">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">Built with 💜 — simple demo</div>
+    </footer>
+    <script>
+      // Auto-hide flash (toast) messages after a short delay
+      (function(){
+        try{
+          const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+          if(mq && mq.matches) return; // respect reduced motion
+          const flashes = document.querySelectorAll('.flash');
+          flashes.forEach((el, idx) => {
+            // stagger slightly so multiple messages don't vanish at exactly same time
+            const delay = 3000 + (idx * 300);
+            setTimeout(()=>{
+              // add hide class to trigger CSS transition then remove from DOM
+              el.classList.add('hide');
+              setTimeout(()=>{ try{ el.remove(); }catch(e){} }, 420);
+            }, delay);
+          });
+        }catch(e){/* ignore */}
+      })();
+    </script>
+  </body>
+</html>

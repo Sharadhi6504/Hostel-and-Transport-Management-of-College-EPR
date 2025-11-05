@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Transport — College ERP{% endblock %}
+{% block content %}
+  <section class="toolbar">
+    <h2>Transport</h2>
+    <a class="btn" href="{{ url_for('drivers') }}">Manage drivers</a>
+    <a class="btn" href="{{ url_for('buses') }}">Manage buses</a>
+    <a class="btn" href="{{ url_for('routes_list') }}">Manage routes</a>
+  </section>
+
+  <section>
+    <p>Use the links above to add/edit drivers, buses and routes. You can also assign buses to routes from the Routes page and assign students to routes from the Students page.</p>
+  </section>
+{% endblock %}

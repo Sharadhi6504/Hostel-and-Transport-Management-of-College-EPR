@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Notification — {{ announcement.title }}{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>{{ announcement.title }}</h2>
+    <div style="color:var(--muted);margin-bottom:8px">Published: {{ announcement.created }}</div>
+    <div style="margin-bottom:12px">{{ announcement.message }}</div>
+    <div class="form-actions">
+      {% if announcement.dismissed %}
+        <span style="color:var(--muted);margin-right:8px">Dismissed</span>
+      {% else %}
+        <form method="post" action="{{ url_for('dismiss_announcement') }}" style="display:inline">
+          <input type="hidden" name="announcement_id" value="{{ announcement.id }}">
+          <button class="btn" type="submit">Dismiss</button>
+        </form>
+      {% endif %}
+      <a class="btn" href="{{ url_for('student_notifications') }}">Back</a>
+    </div>
+  </section>
+{% endblock %}

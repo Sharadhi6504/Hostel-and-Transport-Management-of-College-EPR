@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Buses — College ERP{% endblock %}
+{% block content %}
+  <section class="toolbar">
+    <h2>Buses</h2>
+    <a class="btn" href="{{ url_for('add_bus') }}">Add bus</a>
+  </section>
+  <section>
+    <table class="table">
+      <thead><tr><th>ID</th><th>Registration</th><th>Capacity</th><th>Driver</th></tr></thead>
+      <tbody>
+      {% for b in buses %}
+        <tr>
+          <td>{{ b['id'] }}</td>
+          <td>{{ b['registration'] }}</td>
+          <td>{{ b['capacity'] }}</td>
+          <td>{{ b['driver_name'] or '-' }}</td>
+          <td>
+            <a class="btn" href="{{ url_for('edit_bus', bus_id=b['id']) }}">Edit</a>
+            <form method="post" action="{{ url_for('delete_bus', bus_id=b['id']) }}" style="display:inline">
+              <button class="btn" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4">No buses</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

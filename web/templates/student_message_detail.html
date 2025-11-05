@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Message Thread{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>Thread: {{ root.subject or 'No subject' }}</h2>
+    <p><strong>Started:</strong> {{ root.created }} by {{ root.sender_role or 'student' }}</p>
+    <div class="thread">
+      <div class="message root">
+        <p>{{ root.message }}</p>
+        <p><small>{{ root.created }}</small></p>
+      </div>
+      {% if root.children %}
+        <div class="replies">
+        {% for c in root.children %}
+          <div class="message reply">
+            <p><strong>{{ c.sender_role or 'student' }}</strong>: {{ c.message }}</p>
+            <p><small>{{ c.created }}</small></p>
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Send Reply</h3>
+    <form method="post" action="{{ url_for('student_message_detail', msg_id=root.id) }}">
+      <label>Subject <input name="subject" value="Re: {{ root.subject }}"></label>
+      <label>Message <textarea name="message" required></textarea></label>
+      <div class="form-actions"><button class="btn primary" type="submit">Send Reply</button></div>
+    </form>
+  </section>
+{% endblock %}

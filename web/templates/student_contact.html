@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Contact / Help{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>Contact / Help</h2>
+    <p>Send a message to the admin or a driver. Use this form for detailed queries.</p>
+
+    <form method="post" action="{{ url_for('student_contact') }}">
+      <label>Send to
+        <select name="to_role">
+          <option value="admin">Admin</option>
+          <option value="driver">Driver</option>
+        </select>
+      </label>
+      <label>Driver (if sending to driver)
+        <select name="to_id">
+          <option value="">-- none --</option>
+          {% for d in drivers %}
+            <option value="{{ d['id'] }}">{{ d['name'] }}{% if d.get('contact') %} — {{ d.get('contact') }}{% endif %}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Subject <input name="subject" /></label>
+      <label>Message
+        <textarea name="message" required rows="10" style="width:100%; font-size:1rem; padding:8px;"> </textarea>
+      </label>
+      <div class="form-actions"><button class="btn primary" type="submit">Send Message</button></div>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,2 @@
+Flask>=2.0
+# add other runtime dependencies here if you use them (e.g., pytest)

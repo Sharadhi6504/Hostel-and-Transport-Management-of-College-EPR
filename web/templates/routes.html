@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Routes — College ERP{% endblock %}
+{% block content %}
+  <section class="toolbar">
+    <h2>Routes</h2>
+    <a class="btn" href="{{ url_for('add_route') }}">Add route</a>
+  </section>
+  <section>
+    <table class="table">
+      <thead><tr><th>ID</th><th>Name</th><th>Pickup</th><th>Bus</th><th>Fee</th><th>Riders</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for r in routes %}
+        <tr>
+          <td>{{ r['id'] }}</td>
+          <td>{{ r['name'] }}</td>
+          <td>{{ r['pickup_location'] }}</td>
+          <td>{{ r['bus_reg'] or '-' }}</td>
+          <td>{{ r['fee'] }}</td>
+          <td>{{ r['riders'] }}</td>
+          <td><a class="btn" href="{{ url_for('edit_route', route_id=r['id']) }}">Edit</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7">No routes</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — College ERP{% endblock %}
+{% block content %}
+  <section class="grid">
+    <div style="grid-column:1/-1;margin-bottom:8px;display:flex;justify-content:flex-end;align-items:center">
+      <a class="btn primary" href="{{ url_for('add_announcement') }}" title="Create announcement">
+        <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 10v4h3l4 4V6L6 10H3zm13-6v12c1.7 0 3-1.3 3-3V7c0-1.7-1.3-3-3-3z"/></svg>
+        Announce
+      </a>
+    </div>
+    <div class="card">
+      <h3>Students</h3>
+      <p>
+        <a class="btn" href="{{ url_for('students') }}">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg>
+          Manage students
+        </a>
+      </p>
+    </div>
+    <div class="card">
+      <h3>Hostel</h3>
+      <p>
+        <a class="btn" href="{{ url_for('rooms') }}">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 11v8h6v-6h6v6h6v-8L12 3 3 11z"/></svg>
+          Manage rooms
+        </a>
+      </p>
+    </div>
+    <div class="card">
+      <h3>Transport</h3>
+      <p>
+        <a class="btn" href="{{ url_for('transport_index') }}">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 11v6h1a2 2 0 0 0 4 0h8a2 2 0 0 0 4 0h1v-6l-1.5-4.5A2 2 0 0 0 18.5 4h-13A2 2 0 0 0 3 6.5V11zm2 2h2v2H5v-2zm12 0h2v2h-2v-2z"/></svg>
+          Manage transport
+        </a>
+      </p>
+    </div>
+      <div class="card">
+        <h3>Announcements</h3>
+        <p><a class="btn" href="{{ url_for('announcements_list') }}">Manage announcements</a></p>
+      </div>
+    <div class="card">
+      <h3>Messages</h3>
+      <p>
+        <a class="btn" href="{{ url_for('admin_messages') }}">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v16l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg>
+          Inbox
+        </a>
+        {% if unread_payments and unread_payments > 0 %}
+          <span class="badge" title="Unread payment notifications">{{ unread_payments }}</span>
+        {% endif %}
+      </p>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Add Route — College ERP{% endblock %}
+{% block content %}
+  <section class="card form-card">
+    <h2>Add route</h2>
+    <form method="post">
+      <label>Route name<input name="name" required></label>
+      <label>Pickup location<input name="pickup"></label>
+      <label>Fee<input name="fee" type="number" step="0.01" value="0"></label>
+      <label>Bus id (optional)<input name="bus_id" type="number"></label>
+      <div class="form-actions">
+        <button class="btn primary" type="submit">Add route</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

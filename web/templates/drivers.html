@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Drivers — College ERP{% endblock %}
+{% block content %}
+  <section class="toolbar">
+    <h2>Drivers</h2>
+    <a class="btn" href="{{ url_for('add_driver') }}">Add driver</a>
+  </section>
+  <section>
+    <table class="table">
+  <thead><tr><th>ID</th><th>Name</th><th>License No</th><th>Contact</th></tr></thead>
+      <tbody>
+      {% for d in drivers %}
+        <tr>
+          <td>{{ d['id'] }}</td>
+          <td>{{ d['name'] }}</td>
+          <td>{{ d['license_no'] }}</td>
+          <td>{{ d.get('contact','-') }}</td>
+          <td>
+            <a class="btn" href="{{ url_for('edit_driver', driver_id=d['id']) }}">Edit</a>
+            <form method="post" action="{{ url_for('delete_driver', driver_id=d['id']) }}" style="display:inline">
+              <button class="btn" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="3">No drivers</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

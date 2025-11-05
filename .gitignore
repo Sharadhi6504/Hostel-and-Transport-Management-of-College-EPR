@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual env
+.venv/
+env/
+venv/
+
+# SQLite DB
+erp/erp.db
+*.db
+
+# Editor configs
+.vscode/
+*.swp
+
+# Mac/Windows
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Byte-compiled
+*.pyc
+
+# Dist
+dist/
+build/
+.eggs/
+
+# Coverage
+htmlcov/
+.coverage
+
+# Secret files
+.env
