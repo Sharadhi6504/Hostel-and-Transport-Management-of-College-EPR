@@ -12,7 +12,8 @@ class AssignRouteFlowTest(unittest.TestCase):
 
         # fresh in-memory manager
         self.test_manager = ERPManager(db_path=':memory:')
-        import web.app as webapp_module
+        import importlib
+        webapp_module = importlib.import_module('web.app')
         webapp_module.manager = self.test_manager
 
         self.client = self.app.test_client()

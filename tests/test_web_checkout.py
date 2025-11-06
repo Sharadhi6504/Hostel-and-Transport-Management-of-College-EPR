@@ -15,8 +15,8 @@ class CheckoutFlowTest(unittest.TestCase):
         self.test_manager = ERPManager(db_path=':memory:')
 
         # replace the manager used by the web app module
-        import web.app as webapp_module
-
+        import importlib
+        webapp_module = importlib.import_module('web.app')
         webapp_module.manager = self.test_manager
 
         self.client = self.app.test_client()
