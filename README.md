@@ -28,12 +28,11 @@ python -m unittest discover -v
 
 Maintenance notes
 - Runtime migrations: `erp/db.py` attempts safe ALTER TABLE operations to add new columns when upgrading an existing DB. This is convenient for development but you may want a formal migration strategy for production.
-- If you need to remove the sample announcement text "Hello! this is admin" there is a helper script at `scripts/delete_ann.py` which will delete announcements matching that exact title/message.
 
 Contributing & next steps
 - Add admin visibility to per-student dismissals if you need auditing of who dismissed which announcement.
 - Add an unread/new badge on the Notifications button (easy UX improvement).
 - Add tests for announcements (scheduling, dismissal persistence, notifications listing behavior).
 
-If you'd like, I can add a short demo GIF/screenshots showing the new announcement bar and Notifications page.
+
 
