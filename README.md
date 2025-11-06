@@ -1,5 +1,4 @@
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"# College ERP — Hostel & Transport Management
+# College ERP — Hostel & Transport Management
 
 Lightweight college ERP implemented in Python + SQLite. It started as a CLI and now includes a Flask web UI demo. The project focuses on hostel and transport administration and a simple student-facing profile/notifications experience.
 
