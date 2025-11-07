@@ -1,2 +1,3 @@
 Flask>=2.0
+gunicorn>=20.1.0
 # add other runtime dependencies here if you use them (e.g., pytest)
