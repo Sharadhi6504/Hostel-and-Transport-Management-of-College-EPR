@@ -8,6 +8,34 @@ Features:
 - Hostel: rooms, capacity checks, allocations, check-in/out, payments and simple reports.
 - Transport: drivers, buses, routes, student route assignments, transport payments, attendance.
 
+## Architecture Diagram
+
+```mermaid
+flowchart TB
+    U[Admin / Student Users]
+
+    subgraph Interfaces
+      CLI[CLI Interface\nmain.py -> erp/cli.py]
+      WEB[Flask Web App\nweb/app.py]
+    end
+
+    subgraph Core
+      MANAGER[ERPManager\nerp/manager.py]
+      DB[Database Layer\nerp/db.py]
+    end
+
+    subgraph Storage
+      SQLITE[(SQLite DB\nerp/erp.db)]
+    end
+
+    U --> CLI
+    U --> WEB
+    CLI --> MANAGER
+    WEB --> MANAGER
+    MANAGER --> DB
+    DB --> SQLITE
+```
+
 How to run:
 1. Ensure Python 3.8+ is installed and available on PATH.
 2. From the repository root run the CLI:
@@ -32,6 +60,5 @@ Contributing & next steps
 - Add admin visibility to per-student dismissals if you need auditing of who dismissed which announcement.
 - Add an unread/new badge on the Notifications button (easy UX improvement).
 - Add tests for announcements (scheduling, dismissal persistence, notifications listing behavior).
-
 
 
